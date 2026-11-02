@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOVA | فروشگاه نوا — عمده و تک</title>
+<meta name="description" content="فروشگاه آنلاین نوا (NOVA) — پوشاک و کیف زنانه، عمده و تک، سفارش دوخت مزونی">
+<style>
+  :root{
+    --bg:#14101d; --bg2:#1d1730; --card:#221a3a; --card2:#2a2050;
+    --text:#f5f0ff; --muted:#b9add6; --gold:#e8b34b; --pink:#ff6b9d; --teal:#3fd9c0;
+    --radius:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:Tahoma,"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.9;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;cursor:pointer}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:50; display:flex; align-items:center; gap:1rem;
+    padding:.7rem 1.2rem; background:rgba(20,16,29,.88); backdrop-filter:blur(10px);
+    border-bottom:1px solid #342a55;
+  }
+  .logo{font-size:1.5rem; font-weight:bold; letter-spacing:.35em; color:var(--gold)}
+  .logo small{display:block; letter-spacing:0; font-size:.68rem; color:var(--muted); font-weight:normal}
+  .topbar nav{display:flex; gap:1.1rem; margin-inline-start:auto; font-size:.92rem}
+  .topbar nav a{color:var(--muted)} .topbar nav a:hover{color:var(--gold)}
+  .cart-btn{
+    position:relative; background:linear-gradient(90deg,var(--gold),#ff8a5c); color:#241300; border:none;
+    padding:.45rem 1.2rem; border-radius:999px; font-weight:bold; font-size:.95rem;
+  }
+  .cart-count{
+    position:absolute; top:-8px; inset-inline-start:-8px; background:var(--pink); color:#fff;
+    min-width:22px; height:22px; border-radius:999px; font-size:.78rem; display:flex; align-items:center; justify-content:center;
+  }
+  .cart-count.bump{animation:bump .35s}
+  @keyframes bump{40%{transform:scale(1.45)}}
+
+  /* ---------- Hero ---------- */
+  header{
+    position:relative; text-align:center; padding:4.2rem 1rem 3rem;
+    background:radial-gradient(900px 420px at 85% -10%, #4a2a6e 0%, transparent 60%),
+               radial-gradient(700px 380px at 8% 110%, #6e2a4a 0%, transparent 55%),
+               linear-gradient(180deg,var(--bg2),var(--bg));
+  }
+  #particles{position:absolute; inset:0; width:100%; height:100%; opacity:.5}
+  .hero-in{position:relative; z-index:2}
+  .hero-in h1{font-size:clamp(2rem,6vw,3.4rem); line-height:1.5}
+  .hero-in h1 span{color:var(--gold)}
+  .hero-in p{color:var(--muted); max-width:620px; margin:.8rem auto 1.6rem}
+  .hero-cta{display:flex; gap:.7rem; justify-content:center; flex-wrap:wrap}
+  .btn{padding:.6rem 1.7rem; border-radius:999px; font-weight:bold; display:inline-block; transition:transform .2s}
+  .btn:hover{transform:translateY(-3px)}
+  .btn-main{background:linear-gradient(90deg,var(--gold),#ff8a5c); color:#241300}
+  .btn-ghost{border:1px solid #4a3a7a; background:rgba(30,22,55,.55)}
+  .marquee{overflow:hidden; border-block:1px solid #342a55; background:#191231; padding:.45rem 0; direction:ltr}
+  .marquee-track{display:flex; gap:3rem; width:max-content; animation:mscroll 24s linear infinite; color:#9d8fd0; font-size:.9rem; white-space:nowrap}
+  @keyframes mscroll{to{transform:translateX(-50%)}}
+
+  /* ---------- Toolbar ---------- */
+  .toolbar{max-width:1150px; margin:0 auto; padding:2.2rem 1.2rem 0}
+  .toolbar h2{font-size:clamp(1.4rem,4vw,2rem)}
+  .toolbar h2 span{color:var(--gold)}
+  .note{color:var(--muted); font-size:.88rem; margin-top:.2rem}
+  .controls{display:flex; flex-wrap:wrap; gap:.7rem; align-items:center; margin:1.3rem 0 1.6rem}
+  .search{
+    flex:1 1 220px; background:var(--card); border:1px solid #3a2f66; color:var(--text);
+    border-radius:999px; padding:.55rem 1.2rem; font-size:.95rem; outline:none;
+  }
+  .search:focus{border-color:var(--gold)}
+  .chip{
+    background:var(--card); color:var(--muted); border:1px solid #3a2f66; border-radius:999px;
+    padding:.4rem 1.1rem; font-size:.9rem; transition:all .2s;
+  }
+  .chip:hover{color:var(--text)}
+  .chip.active{background:linear-gradient(90deg,var(--gold),#ff8a5c); color:#241300; border-color:transparent; font-weight:bold}
+  select.sort{
+    background:var(--card); color:var(--text); border:1px solid #3a2f66; border-radius:999px;
+    padding:.5rem 1rem; font-size:.9rem; outline:none;
+  }
+
+  /* ---------- Products ---------- */
+  .grid{max-width:1150px; margin:0 auto; padding:0 1.2rem 2rem; display:grid; grid-template-columns:repeat(auto-fill,minmax(255px,1fr)); gap:1.15rem}
+  .p-card{
+    background:linear-gradient(165deg,var(--card),var(--card2)); border:1px solid #372c63; border-radius:var(--radius);
+    overflow:hidden; opacity:0; transform:translateY(26px); transition:opacity .55s, transform .55s, box-shadow .25s, border-color .25s;
+    display:flex; flex-direction:column;
+  }
+  .p-card.show{opacity:1; transform:none}
+  .p-card:hover{transform:translateY(-6px); border-color:var(--gold); box-shadow:0 18px 42px rgba(0,0,0,.4)}
+  .visual{
+    height:150px; display:flex; align-items:center; justify-content:center; font-size:3.6rem; position:relative;
+    background:radial-gradient(320px 160px at 80% 0%, rgba(255,255,255,.16), transparent 60%), var(--vg,#3a2a6e);
+  }
+  .visual::after{content:""; position:absolute; inset:0; background:repeating-linear-gradient(45deg, transparent 0 14px, rgba(255,255,255,.03) 14px 28px)}
+  .badge-new{
+    position:absolute; top:.7rem; inset-inline-start:.7rem; z-index:2; background:var(--pink); color:#fff;
+    font-size:.72rem; padding:.05rem .6rem; border-radius:999px; font-weight:bold;
+  }
+  .p-body{padding:1rem 1.1rem 1.2rem; display:flex; flex-direction:column; gap:.3rem; flex:1}
+  .p-body h3{font-size:1.05rem}
+  .p-meta{color:var(--muted); font-size:.85rem}
+  .p-code{color:var(--teal); font-size:.8rem}
+  .p-foot{margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:.6rem; padding-top:.7rem}
+  .price{font-weight:bold; color:var(--gold); font-size:1rem; white-space:nowrap}
+  .price small{display:block; color:var(--muted); font-weight:normal; font-size:.7rem}
+  .add-btn{
+    background:linear-gradient(90deg,var(--gold),#ff8a5c); color:#241300; border:none; border-radius:999px;
+    padding:.42rem 1.1rem; font-weight:bold; font-size:.88rem; white-space:nowrap; transition:transform .15s;
+  }
+  .add-btn:active{transform:scale(.93)}
+  .ask-btn{background:transparent; border:1px solid var(--gold); color:var(--gold)}
+  .empty{display:none; text-align:center; color:var(--muted); padding:2.5rem 1rem; max-width:1150px; margin:0 auto}
+
+  /* ---------- Info ---------- */
+  .info{max-width:1150px; margin:0 auto; padding:1rem 1.2rem 3rem; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.15rem}
+  .info .box{background:var(--card); border:1px solid #372c63; border-radius:var(--radius); padding:1.4rem}
+  .info .box h3{margin-bottom:.4rem; font-size:1.05rem}
+  .info .box p{color:var(--muted); font-size:.92rem}
+  .info .box a{color:var(--gold)}
+
+  footer{border-top:1px solid #342a55; background:#191231; text-align:center; color:var(--muted); padding:2rem 1rem 2.4rem; font-size:.9rem}
+  footer .links{display:flex; gap:1.3rem; justify-content:center; flex-wrap:wrap; margin-bottom:.7rem}
+  footer .links a{color:var(--text)} footer .links a:hover{color:var(--gold)}
+
+  /* ---------- Cart drawer ---------- */
+  .overlay{position:fixed; inset:0; background:rgba(8,5,16,.6); opacity:0; pointer-events:none; transition:opacity .3s; z-index:60}
+  .overlay.open{opacity:1; pointer-events:auto}
+  .drawer{
+    position:fixed; top:0; bottom:0; inset-inline-start:0; width:min(400px,92vw); z-index:61;
+    background:var(--bg2); border-inline-end:1px solid #3a2f66; transform:translateX(105%); transition:transform .35s;
+    display:flex; flex-direction:column; padding:1.2rem;
+  }
+  [dir="rtl"] .drawer{transform:translateX(-105%)}
+  .drawer.open{transform:none!important}
+  .drawer h3{font-size:1.2rem; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center}
+  .drawer h3 button{background:none; border:none; color:var(--muted); font-size:1.3rem}
+  .items{flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:.7rem}
+  .item{display:flex; gap:.7rem; align-items:center; background:var(--card); border:1px solid #372c63; border-radius:12px; padding:.6rem .8rem}
+  .item .t{flex:1} .item .t b{font-size:.92rem; display:block} .item .t span{color:var(--gold); font-size:.85rem}
+  .qty{display:flex; align-items:center; gap:.45rem}
+  .qty button{width:26px; height:26px; border-radius:8px; border:1px solid #4a3a7a; background:transparent; color:var(--text); font-size:1rem}
+  .rm{background:none; border:none; color:var(--pink); font-size:1rem}
+  .drawer .total{display:flex; justify-content:space-between; font-weight:bold; padding:1rem 0 .6rem; border-top:1px solid #3a2f66; margin-top:1rem}
+  .order-btn{background:#25d366; color:#08130b; border:none; border-radius:999px; padding:.75rem; font-weight:bold; font-size:1rem; width:100%}
+  .drawer .hint{color:var(--muted); font-size:.8rem; text-align:center; margin-top:.6rem}
+  .toast{
+    position:fixed; bottom:1.2rem; left:50%; transform:translate(-50%,80px); z-index:70; background:var(--gold); color:#241300;
+    padding:.55rem 1.4rem; border-radius:999px; font-weight:bold; transition:transform .35s; font-size:.92rem;
+  }
+  .toast.show{transform:translate(-50%,0)}
+  @media (prefers-reduced-motion: reduce){*{animation:none!important; transition:none!important} .p-card{opacity:1; transform:none}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">NOVA<small>فروشگاه نوا — عمده و تک</small></div>
+  <nav>
+    <a href="#products">محصولات</a>
+    <a href="#order">نحوه سفارش</a>
+    <a href="https://www.instagram.com/nova_dress" target="_blank" rel="noopener">اینستاگرام</a>
+    <a href="https://t.me/Nova_dress" target="_blank" rel="noopener">تلگرام</a>
+  </nav>
+  <button class="cart-btn" id="openCart">🛒 سبد خرید <span class="cart-count" id="cartCount">۰</span></button>
+</div>
+
+<header>
+  <canvas id="particles"></canvas>
+  <div class="hero-in">
+    <h1>فروشگاه <span>N O V A</span> 💎</h1>
+    <p>پوشاک و کیف زنانه — عمده و تک، به‌همراه سفارش دوخت مزونی. کاتالوگ زیر از پست‌های مشترک پیج اینستاگرام و کانال تلگرام نوا جمع شده؛ برای سفارش، کافیه به سبد خرید اضافه کنی و سفارشت رو واتس‌اپ بفرستی.</p>
+    <div class="hero-cta">
+      <a class="btn btn-main" href="#products">دیدن محصولات</a>
+      <a class="btn btn-ghost" href="https://wa.me/989367471084" target="_blank" rel="noopener">سفارش در واتس‌اپ</a>
+    </div>
+  </div>
+</header>
+
+<div class="marquee"><div class="marquee-track" id="marquee"></div></div>
+
+<div class="toolbar" id="products">
+  <h2>کاتالوگ <span>محصولات</span></h2>
+  <p class="note">قیمت‌های درج‌شده طبق پست‌های کانال تلگرام است؛ موقع سفارش، قیمت و موجودی روز تأیید می‌شود. مدل‌های جدید قیمت ندارند و استعلامی‌اند.</p>
+  <div class="controls">
+    <input class="search" id="search" type="text" placeholder="🔎 جستجو: شومیز، کیف، کد محصول…">
+    <button class="chip active" data-cat="all">همه</button>
+    <button class="chip" data-cat="clothes">👗 پوشاک</button>
+    <button class="chip" data-cat="bags">👜 کیف</button>
+    <button class="chip" data-cat="accessories">✨ اکسسوری</button>
+    <select class="sort" id="sort">
+      <option value="default">مرتب‌سازی: پیش‌فرض</option>
+      <option value="cheap">ارزان‌ترین</option>
+      <option value="exp">گران‌ترین</option>
+      <option value="new">جدیدترین</option>
+    </select>
+  </div>
+</div>
+
+<div class="grid" id="grid"></div>
+<div class="empty" id="empty">چیزی با این جستجو پیدا نشد 🌙</div>
+
+<div class="info" id="order">
+  <div class="box">
+    <h3>📦 نحوه سفارش</h3>
+    <p>محصول رو به سبد خرید اضافه کن و دکمه «ثبت سفارش در واتس‌اپ» رو بزن، یا مستقیم پیام بده:<br>
+    واتس‌اپ و تماس: <a href="https://wa.me/989367471084" target="_blank" rel="noopener">0936 74 71 084</a><br>
+    سفارش در تلگرام: <a href="https://t.me/novaapv" target="_blank" rel="noopener">@novaapv</a></p>
+  </div>
+  <div class="box">
+    <h3>✂️ سفارش دوخت مزونی</h3>
+    <p>قد و سایز نسبت به سفارش شما متغیره؛ برای دوخت مزونی و مدل‌های سفارشی از طریق واتس‌اپ هماهنگ کنید.</p>
+  </div>
+  <div class="box">
+    <h3>📍 خرید حضوری</h3>
+    <p>تهران، قیطریه، مهر ۴ غربی، کوچه مریم، پلاک ۵، واحد ۲<br>هر روز از ساعت ۱۱ تا ۱۹</p>
+  </div>
+</div>
+
+<footer>
+  <div class="links">
+    <a href="https://www.instagram.com/nova_dress" target="_blank" rel="noopener">اینستاگرام نوا</a>
+    <a href="https://t.me/Nova_dress" target="_blank" rel="noopener">کانال تلگرام</a>
+    <a href="https://www.instagram.com/nova__bag" target="_blank" rel="noopener">پیج کیف نوا</a>
+    <a href="../">سایت شخصی میثم</a>
+  </div>
+  <div>N O V A 💎 — عمده و تک | این فروشگاه روی GitHub Pages میزبانی می‌شود.</div>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer">
+  <h3>🛒 سبد خرید <button id="closeCart">✕</button></h3>
+  <div class="items" id="items"></div>
+  <div class="total"><span>جمع (کالاهای قیمت‌دار):</span><span id="total">۰ تومان</span></div>
+  <button class="order-btn" id="orderBtn">ثبت سفارش در واتس‌اپ 💬</button>
+  <div class="hint">کالاهای «استعلامی» هم به متن سفارش اضافه می‌شن تا قیمت روزشون رو بپرسی.</div>
+</aside>
+<div class="toast" id="toast">به سبد خرید اضافه شد ✅</div>
+
+<script>
+const PRODUCTS = [
+  {id:1,  name:"شومیز پشت‌بندی", cat:"clothes", price:null, code:"جدید", meta:"فری‌سایز ۳۶ تا ۴۶ • جنس دوک‌دوزی • ۴ رنگ", icon:"👚", vg:"#5b2a6e", isNew:true},
+  {id:2,  name:"شومیز گل‌گچی", cat:"clothes", price:null, code:"جدید", meta:"فری‌سایز ۳۶ تا ۴۶ • جنس لینن گل‌گچی • ۴ رنگ", icon:"🌸", vg:"#2a6e5b", isNew:true},
+  {id:3,  name:"کالکشن پاییزه نوا", cat:"clothes", price:null, code:"جدید", meta:"سایزبندی XS • M • L • تعداد محدود", icon:"🍂", vg:"#6e4a2a", isNew:true},
+  {id:4,  name:"دو تیکه", cat:"clothes", price:118, code:"293", meta:"تک‌رنگ • سایز S • M • L", icon:"👗", vg:"#3a2a6e"},
+  {id:5,  name:"دو تیکه اسپرت مخمل", cat:"clothes", price:138, code:"292", meta:"جنس مخمل • سایز S • M • L (قرمز تمام شد)", icon:"👗", vg:"#6e2a3a"},
+  {id:6,  name:"نیم‌تنه ترک", cat:"clothes", price:247, code:"224", meta:"تک‌رنگ • سایز S • M • L", icon:"👚", vg:"#2a4a6e"},
+  {id:7,  name:"شومیز کیمونو", cat:"clothes", price:198, code:"2315", meta:"تک‌رنگ • فری‌سایز", icon:"👚", vg:"#4a2a6e"},
+  {id:8,  name:"شلوارک جین", cat:"clothes", price:168, code:"321", meta:"تک‌رنگ • سایز S • M • L", icon:"🩳", vg:"#2a5b6e"},
+  {id:9,  name:"شومیز منگو", cat:"clothes", price:227, code:"234", meta:"تک‌رنگ • فری‌سایز", icon:"👚", vg:"#6e2a5b"},
+  {id:10, name:"شومیز منگو — آستین کیمونو", cat:"clothes", price:237, code:"2316", meta:"تک‌رنگ • فری‌سایز", icon:"👚", vg:"#5b3a2a"},
+  {id:11, name:"شومیز منگو — نخ ترک", cat:"clothes", price:237, code:"2317", meta:"تک‌رنگ • فری‌سایز", icon:"👚", vg:"#2a6e4a"},
+  {id:12, name:"شومیز", cat:"clothes", price:138, code:"—", meta:"تک‌رنگ • فری‌سایز", icon:"👚", vg:"#3a5b2a"},
+  {id:13, name:"شلوار جین ترک", cat:"clothes", price:287, code:"PSJ1", meta:"قد ۹۰ • سایز ۳۶ • ۳۸ • ۴۰ • چهار رنگ: دودی، طوسی، مشکی، آبی", icon:"👖", vg:"#2a3a6e"},
+  {id:14, name:"کیف چرم شنل — سنگی", cat:"bags", price:375, code:"KD2", meta:"مدل کوله و دستی • تک‌رنگ", icon:"👜", vg:"#6e5b2a"},
+  {id:15, name:"کیف چرم گوچی — دو زیپ", cat:"bags", price:297, code:"KD5", meta:"مدل کمری و دستی • تک‌رنگ", icon:"👜", vg:"#4a6e2a"},
+  {id:16, name:"کیف چرم بندی", cat:"bags", price:395, code:"KD4", meta:"تک‌رنگ", icon:"👛", vg:"#6e2a2a"},
+  {id:17, name:"کیف دستی چرم طبیعی — چوب گردو", cat:"bags", price:670, code:"KD3", meta:"مدل دوشی • دو رنگ: مشکی و زرشکی", icon:"👜", vg:"#5b2a3a"},
+  {id:18, name:"کیف چرم Louis Vuitton — شناسنامه‌دار", cat:"bags", price:790, code:"KD6", meta:"مدل آویز • دو رنگ: مشکی و قهوه‌ای", icon:"👜", vg:"#2a2a6e"},
+  {id:19, name:"پاکت سیگار", cat:"accessories", price:75, code:"—", meta:"رنگ‌بندی", icon:"🚬", vg:"#3a3a3a"},
+  {id:20, name:"گوشواره طرح اسکلت", cat:"accessories", price:75, code:"—", meta:"طرح اسکلت", icon:"💀", vg:"#444466"},
+  {id:21, name:"کلاه", cat:"accessories", price:98, code:"—", meta:"رنگ‌بندی: مشکی، قرمز، قهوه‌ای، طوسی، سورمه‌ای", icon:"🧢", vg:"#2a5b5b"}
+];
+const FA = n => n.toLocaleString('fa-IR');
+const grid = document.getElementById('grid');
+const emptyEl = document.getElementById('empty');
+let cart = JSON.parse(localStorage.getItem('nova_cart') || '{}');
+let cat = 'all', query = '', sort = 'default';
+
+function render(){
+  let list = PRODUCTS.filter(p =>
+    (cat==='all' || p.cat===cat) &&
+    (p.name + ' ' + p.code + ' ' + p.meta).includes(query)
+  );
+  if(sort==='cheap') list = [...list].sort((a,b)=>(a.price??Infinity)-(b.price??Infinity));
+  if(sort==='exp')   list = [...list].sort((a,b)=>(b.price??-1)-(a.price??-1));
+  if(sort==='new')   list = [...list].sort((a,b)=>(b.isNew?1:0)-(a.isNew?1:0));
+  grid.innerHTML = list.map(p => `
+    <article class="p-card">
+      <div class="visual" style="--vg:${p.vg}">${p.isNew?'<span class="badge-new">جدید 🔥</span>':''}<span>${p.icon}</span></div>
+      <div class="p-body">
+        <h3>${p.name}</h3>
+        <div class="p-meta">${p.meta}</div>
+        <div class="p-code">کد: ${p.code}</div>
+        <div class="p-foot">
+          ${p.price
+            ? `<span class="price">${FA(p.price)} هزار تومان<small>طبق پست کانال</small></span>
+               <button class="add-btn" onclick="addToCart(${p.id})">＋ سبد خرید</button>`
+            : `<span class="price">استعلام قیمت<small>مدل جدید</small></span>
+               <button class="add-btn ask-btn" onclick="addToCart(${p.id})">＋ سبد خرید</button>`}
+        </div>
+      </div>
+    </article>`).join('');
+  emptyEl.style.display = list.length ? 'none' : 'block';
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('.p-card').forEach((el,i)=>{
+      setTimeout(()=>el.classList.add('show'), 40*i);
+    });
+  });
+}
+function saveCart(){ localStorage.setItem('nova_cart', JSON.stringify(cart)); }
+function cartQty(){ return Object.values(cart).reduce((s,q)=>s+q,0); }
+function renderCart(){
+  const box = document.getElementById('items');
+  const ids = Object.keys(cart);
+  if(!ids.length){ box.innerHTML = '<p style="color:var(--muted);text-align:center;padding:1.5rem 0">سبدت خالیه 🛍️</p>'; }
+  else box.innerHTML = ids.map(id => {
+    const p = PRODUCTS.find(x=>x.id==id);
+    return `<div class="item">
+      <div class="t"><b>${p.icon} ${p.name}</b><span>${p.price ? FA(p.price)+' هزار تومان' : 'استعلامی'} • کد ${p.code}</span></div>
+      <div class="qty"><button onclick="chg(${id},1)">＋</button><span>${FA(cart[id])}</span><button onclick="chg(${id},-1)">－</button></div>
+      <button class="rm" onclick="rm(${id})">🗑</button>
+    </div>`;
+  }).join('');
+  const total = ids.reduce((s,id)=>{ const p=PRODUCTS.find(x=>x.id==id); return s + (p.price? p.price*cart[id] : 0); }, 0);
+  document.getElementById('total').textContent = FA(total) + ' هزار تومان';
+  const cc = document.getElementById('cartCount');
+  cc.textContent = FA(cartQty());
+  cc.classList.remove('bump'); void cc.offsetWidth; cc.classList.add('bump');
+}
+window.addToCart = id => { cart[id] = (cart[id]||0)+1; saveCart(); renderCart();
+  const t = document.getElementById('toast'); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 1600); };
+window.chg = (id,d) => { cart[id]+=d; if(cart[id]<=0) delete cart[id]; saveCart(); renderCart(); };
+window.rm = id => { delete cart[id]; saveCart(); renderCart(); };
+
+const drawer = document.getElementById('drawer'), overlay = document.getElementById('overlay');
+document.getElementById('openCart').onclick = ()=>{ drawer.classList.add('open'); overlay.classList.add('open'); };
+const close = ()=>{ drawer.classList.remove('open'); overlay.classList.remove('open'); };
+document.getElementById('closeCart').onclick = close; overlay.onclick = close;
+document.getElementById('orderBtn').onclick = ()=>{
+  const ids = Object.keys(cart);
+  if(!ids.length){ alert('سبدت خالیه! اول یه محصول اضافه کن 🛍️'); return; }
+  let lines = ['سلام NOVA 💎 سفارش من از فروشگاه آنلاین:',''];
+  let total = 0;
+  ids.forEach(id=>{ const p = PRODUCTS.find(x=>x.id==id);
+    lines.push(`▪️ ${p.name} (کد ${p.code}) × ${cart[id]} — ${p.price ? FA(p.price*cart[id])+' هزار تومان' : 'استعلام قیمت'}`);
+    if(p.price) total += p.price*cart[id];
+  });
+  lines.push('', `جمع کالاهای قیمت‌دار: ${FA(total)} هزار تومان`, 'ممنون 🌹');
+  window.open('https://wa.me/989367471084?text=' + encodeURIComponent(lines.join('\n')), '_blank');
+};
+
+document.querySelectorAll('.chip').forEach(c => c.onclick = ()=>{
+  document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+  c.classList.add('active'); cat = c.dataset.cat; render();
+});
+document.getElementById('search').oninput = e => { query = e.target.value.trim(); render(); };
+document.getElementById('sort').onchange = e => { sort = e.target.value; render(); };
+
+// Marquee
+const mItems = ['عمده و تک 💎','سفارش دوخت مزونی ✂️','ارسال به سراسر کشور 📦','کالکشن پاییزه 🍂','کیف چرم طبیعی 👜','خرید حضوری در قیطریه 📍'];
+const half = mItems.map(t=>`<span>✦ ${t}</span>`).join('');
+document.getElementById('marquee').innerHTML = half + half;
+
+// Particles
+const cv = document.getElementById('particles'), ctx = cv.getContext('2d');
+let W,H,pts=[];
+function resize(){ W=cv.width=cv.offsetWidth; H=cv.height=cv.offsetHeight;
+  pts = Array.from({length:Math.min(70,W/16)},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.45,vy:(Math.random()-.5)*.45,r:Math.random()*2+.6})); }
+resize(); addEventListener('resize', resize);
+(function draw(){ ctx.clearRect(0,0,W,H);
+  for(const p of pts){ p.x+=p.vx; p.y+=p.vy; if(p.x<0||p.x>W)p.vx*=-1; if(p.y<0||p.y>H)p.vy*=-1;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,7); ctx.fillStyle='rgba(232,179,75,.75)'; ctx.fill(); }
+  requestAnimationFrame(draw); })();
+
+render(); renderCart();
+</script>
+</body>
+</html>
