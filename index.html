@@ -99,6 +99,16 @@
   footer .links{display:flex; gap:1.4rem; justify-content:center; margin-bottom:.8rem; flex-wrap:wrap}
   footer .links a{color:var(--text)}
   footer .links a:hover{color:var(--accent)}
+  @media (max-width: 640px){
+    header{min-height:82vh; padding:1.6rem .8rem}
+    section{padding:3rem .85rem .6rem}
+    .grid{grid-template-columns:1fr; gap:.85rem}
+    .card{padding:1.25rem}
+    .stats{grid-template-columns:1fr 1fr; gap:.8rem}
+    .stat .num{font-size:1.7rem}
+    .project{flex-direction:column; gap:.5rem; padding:1.2rem}
+    .cta .btn{padding:.6rem 1.3rem; font-size:.93rem}
+  }
   @media (prefers-reduced-motion: reduce){
     *{animation:none!important; transition:none!important}
     .card,.project{opacity:1; transform:none}

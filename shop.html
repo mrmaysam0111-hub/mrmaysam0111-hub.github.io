@@ -151,6 +151,35 @@
     padding:.55rem 1.4rem; border-radius:999px; font-weight:bold; transition:transform .35s; font-size:.92rem;
   }
   .toast.show{transform:translate(-50%,0)}
+  /* ---------- Mobile ---------- */
+  @media (max-width: 680px){
+    .topbar{flex-wrap:wrap; gap:.45rem .8rem; padding:.6rem .8rem}
+    .logo{font-size:1.25rem}
+    .topbar nav{order:3; width:100%; overflow-x:auto; gap:1.05rem; padding-bottom:.15rem; white-space:nowrap; margin-inline-start:0}
+    .cart-btn{margin-inline-start:auto; padding:.4rem .95rem; font-size:.88rem}
+    header{padding:2.6rem .9rem 2.1rem}
+    .hero-in p{font-size:.93rem}
+    .grid{grid-template-columns:repeat(2,1fr); gap:.7rem; padding:0 .7rem 1.6rem}
+    .visual{height:104px; font-size:2.5rem}
+    .p-body{padding:.7rem .75rem .95rem}
+    .p-body h3{font-size:.93rem; line-height:1.7}
+    .p-meta{font-size:.76rem; line-height:1.8}
+    .p-code{font-size:.74rem}
+    .p-foot{flex-direction:column; align-items:stretch; gap:.5rem}
+    .price{text-align:center; font-size:.92rem}
+    .add-btn{width:100%; padding:.52rem}
+    .controls{gap:.5rem; margin:1rem 0 1.2rem}
+    .chip{padding:.35rem .85rem; font-size:.84rem}
+    select.sort{flex:1 1 140px}
+    .toolbar{padding:1.6rem .85rem 0}
+    .info{padding:.4rem .85rem 2.4rem}
+    .drawer{width:94vw}
+    footer .links{gap:.9rem}
+  }
+  @media (max-width: 370px){
+    .logo small{display:none}
+    .p-body h3{font-size:.86rem}
+  }
   @media (prefers-reduced-motion: reduce){*{animation:none!important; transition:none!important} .p-card{opacity:1; transform:none}}
 </style>
 </head>
